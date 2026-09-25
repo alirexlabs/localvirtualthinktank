@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local Virtual ThinkTank (LVTT) ユーザー操作マニュアル</title>
+  <!-- Google Fonts: Zen/モダンタイポグラフィ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+JP:wght@500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-base: #F7F5F0;
+      --bg-surface: #FFFFFF;
+      --bg-surface-raised: #FCFBF9;
+      --text-primary: #1A1F20;
+      --text-secondary: #5A6466;
+      --text-muted: #8A9699;
+      --border-color: #E2DDD5;
+      --border-subtle: #ECE8E1;
+      --zen-primary: #2E5A35;
+      --zen-primary-hover: #244629;
+      --zen-accent: #B45309;
+      --zen-teal: #3B6978;
+      --zen-dark-card: #181E20;
+      --code-bg: #202628;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --sidebar-width: 290px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-base: #121617;
+        --bg-surface: #1A2022;
+        --bg-surface-raised: #22292C;
+        --text-primary: #E6EAEB;
+        --text-secondary: #9BAAB0;
+        --text-muted: #6B7C82;
+        --border-color: #2D373B;
+        --border-subtle: #232B2E;
+        --zen-primary: #458B50;
+        --zen-primary-hover: #52A35F;
+        --zen-accent: #D97706;
+        --zen-teal: #4D8B9E;
+        --code-bg: #14191B;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      line-height: 1.7;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 上部ヘッダー */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .brand-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      box-shadow: var(--shadow-sm);
+      object-cover: cover;
+    }
+
+    .brand-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--zen-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      border-left: 1px solid var(--border-color);
+      padding-left: 12px;
+      margin-left: 2px;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background-color: rgba(46, 90, 53, 0.12);
+      color: var(--zen-primary);
+      border: 1px solid rgba(46, 90, 53, 0.25);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    /* レイアウト構造 */
+    .layout-container {
+      display: flex;
+      max-width: 1440px;
+      margin: 0 auto;
+      min-height: calc(100vh - 61px);
+    }
+
+    /* サイドバー目次 */
+    aside.sidebar {
+      width: var(--sidebar-width);
+      position: sticky;
+      top: 61px;
+      height: calc(100vh - 61px);
+      overflow-y: auto;
+      border-right: 1px solid var(--border-color);
+      background-color: var(--bg-surface-raised);
+      padding: 24px 16px;
+      flex-shrink: 0;
+    }
+
+    .toc-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+      padding-left: 10px;
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-list li {
+      margin-bottom: 3px;
+    }
+
+    .toc-list a {
+      display: block;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      transition: all 0.15s ease;
+      line-height: 1.4;
+    }
+
+    .toc-list a:hover {
+      background-color: rgba(46, 90, 53, 0.08);
+      color: var(--zen-primary);
+    }
+
+    .toc-list a.active {
+      background-color: var(--zen-primary);
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    .toc-sublist {
+      list-style: none;
+      padding-left: 14px;
+      margin-top: 2px;
+      margin-bottom: 4px;
+    }
+
+    .toc-sublist a {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* メインコンテンツ */
+    main.content {
+      flex: 1;
+      padding: 40px 60px 80px;
+      max-width: 960px;
+      background-color: var(--bg-surface);
+      margin: 20px auto;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    /* タイポグラフィ */
+    h1, h2, h3, h4 {
+      font-family: 'Noto Serif JP', serif;
+      color: var(--text-primary);
+      line-height: 1.35;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 16px;
+      color: var(--zen-primary);
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 14px;
+    }
+
+    h2 {
+      font-size: 20px;
+      margin-top: 48px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    h2::before {
+      content: "";
+      display: inline-block;
+      width: 5px;
+      height: 20px;
+      background-color: var(--zen-primary);
+      border-radius: 2px;
+    }
+
+    h3 {
+      font-size: 16px;
+      margin-top: 28px;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    p {
+      margin-bottom: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* ヒーローカード */
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(46, 90, 53, 0.08) 0%, rgba(59, 105, 120, 0.08) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-bottom: 36px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .hero-text h2 {
+      margin: 0 0 6px 0;
+      border: none;
+      padding: 0;
+      font-size: 19px;
+      color: var(--zen-primary);
+    }
+    .hero-text h2::before { display: none; }
+    .hero-text p { margin: 0; font-size: 13.5px; }
+
+    /* ダイアグラム画像コンテナ */
+    .diagram-figure {
+      margin: 28px 0;
+      padding: 16px;
+      background-color: var(--bg-surface-raised);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .diagram-figure img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius-sm);
+      display: block;
+      margin: 0 auto;
+    }
+
+    .diagram-caption {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* コールアウト / アラート */
+    .callout {
+      padding: 16px 20px;
+      border-radius: var(--radius-md);
+      margin: 20px 0;
+      font-size: 13.5px;
+      border-left: 4px solid;
+      background-color: var(--bg-surface-raised);
+    }
+
+    .callout-tip {
+      border-left-color: var(--zen-primary);
+      background-color: rgba(46, 90, 53, 0.06);
+    }
+
+    .callout-info {
+      border-left-color: var(--zen-teal);
+      background-color: rgba(59, 105, 120, 0.06);
+    }
+
+    .callout-warn {
+      border-left-color: var(--zen-accent);
+      background-color: rgba(180, 83, 9, 0.06);
+    }
+
+    .callout-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .callout-tip .callout-title { color: var(--zen-primary); }
+    .callout-info .callout-title { color: var(--zen-teal); }
+    .callout-warn .callout-title { color: var(--zen-accent); }
+
+    /* テーブル */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0 28px;
+      font-size: 13.5px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    th, td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: var(--bg-surface-raised);
+      color: var(--text-primary);
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:nth-child(even) td {
+      background-color: rgba(0,0,0,0.015);
+    }
+
+    /* コード・キーボード */
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      background-color: rgba(0,0,0,0.06);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--zen-teal);
+    }
+
+    pre code {
+      display: block;
+      padding: 16px;
+      background-color: var(--code-bg);
+      color: #D1D5DB;
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      line-height: 1.5;
+    }
+
+    kbd {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background-color: var(--bg-surface-raised);
+      border: 1px solid var(--border-color);
+      border-bottom-width: 2px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--text-primary);
+      box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    }
+
+    /* フッター */
+    footer.site-footer {
+      text-align: center;
+      padding: 30px;
+      color: var(--text-muted);
+      font-size: 12px;
+      border-top: 1px solid var(--border-color);
+      background-color: var(--bg-surface);
+      margin-top: 40px;
+    }
+
+    /* 印刷スタイル */
+    @media print {
+      header.site-header, aside.sidebar, footer.site-footer {
+        display: none !important;
+      }
+      body {
+        background-color: #FFFFFF !important;
+        color: #000000 !important;
+        font-size: 12pt;
+      }
+      main.content {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+      }
+      h2 { page-break-before: always; }
+      h2:first-of-type { page-break-before: avoid; }
+      .diagram-figure { page-break-inside: avoid; }
+      table { page-break-inside: avoid; }
+    }
+
+    /* モバイルレスポンシブ */
+    @media (max-width: 860px) {
+      aside.sidebar { display: none; }
+      main.content { padding: 24px 20px; margin: 10px; }
+      .brand-subtitle { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- トップヘッダー -->
+  <header class="site-header">
+    <div class="brand-area">
+      <a href="../../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 14px; color: inherit;">
+        <img src="../images/logo.png" alt="Logo" class="brand-logo">
+        <div class="brand-title">Local Virtual ThinkTank</div>
+      </a>
+      <div class="brand-subtitle">ユーザー操作マニュアル</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="../../index.html" style="font-size: 12px; color: var(--text-secondary); text-decoration: none; font-weight: 500; padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-color);">🏠 製品紹介LPへ</a>
+      <div class="header-badge">
+        <span>🔒 100% Local (v0.2.2)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2カラムレイアウト -->
+  <div class="layout-container">
+    
+    <!-- 目次サイドバー -->
+    <aside class="sidebar">
+      <div class="toc-title">目次 / CONTENTS</div>
+      <ul class="toc-list">
+        <li><a href="#section-1">1. はじめに</a>
+          <ul class="toc-sublist">
+            <li><a href="#section-1-1">1.1 コンセプトと特徴</a></li>
+            <li><a href="#section-1-2">1.2 全体ワークフロー</a></li>
+            <li><a href="#section-1-3">1.3 ナビゲーション構成</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-2">2. 会議の準備（助走モード）</a>
+          <ul class="toc-sublist">
+            <li><a href="#section-2-1">2.1 テーマ・前提入力</a></li>
+            <li><a href="#section-2-2">2.2 議論モードの選定</a></li>
+            <li><a href="#section-2-3">2.3 言語とラウンド数</a></li>
+            <li><a href="#section-2-4">2.4 AIによる自動設計</a></li>
+            <li><a href="#section-2-5">2.5 プレビュー確認</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-3">3. 会議室の操作</a>
+          <ul class="toc-sublist">
+            <li><a href="#section-3-1">3.1 画面の見方 (2ペイン構成)</a></li>
+            <li><a href="#section-3-2">3.2 議論の進行制御</a></li>
+            <li><a href="#section-3-3">3.3 ラウンド数延長</a></li>
+            <li><a href="#section-3-4">3.4 人間介入 (HITL)</a></li>
+            <li><a href="#section-3-5">3.5 停滞検知・エスカレーション</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-4">4. 議事録・エクスポート</a>
+          <ul class="toc-sublist">
+            <li><a href="#section-4-1">4.1 構造化議事録</a></li>
+            <li><a href="#section-4-2">4.2 議事録の直接編集</a></li>
+            <li><a href="#section-4-3">4.3 MD / JSON 出力</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-5">5. 議論リレー</a>
+          <ul class="toc-sublist">
+            <li><a href="#section-5-1">5.1 リレー概要</a></li>
+            <li><a href="#section-5-2">5.2 次フェーズへの引き継ぎ</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-6">6. 会議履歴・過去ログ管理</a>
+          <ul class="toc-sublist">
+            <li><a href="#section-6-1">6.1 履歴一覧</a></li>
+            <li><a href="#section-6-2">6.2 検索・絞り込み</a></li>
+            <li><a href="#section-6-3">6.3 閲覧・再開・完全削除</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-7">7. 設定と製品情報</a>
+          <ul class="toc-sublist">
+            <li><a href="#section-7-1">7.1 テーマ切り替え</a></li>
+            <li><a href="#section-7-2">7.2 インフラ状態確認</a></li>
+            <li><a href="#section-7-3">7.3 About 画面確認</a></li>
+          </ul>
+        </li>
+        <li><a href="#section-8">8. よくある質問 (FAQ)</a></li>
+      </ul>
+    </aside>
+
+    <!-- メインコンテンツ -->
+    <main class="content">
+
+      <!-- ヒーローセクション -->
+      <div class="hero-banner">
+        <img src="../images/logo.png" alt="Logo" width="68" height="68" style="border-radius: 12px; box-shadow: var(--shadow-sm);">
+        <div class="hero-text">
+          <h2>Local Virtual ThinkTank (LVTT)</h2>
+          <p>機密情報を扱える、完全プライベートなAIマルチエージェント会議室。<br>
+          外部クラウド送信ゼロの安心閉域網で、最高密度のブレインストーミングを実現します。</p>
+        </div>
+      </div>
+
+      <!-- 第1章 -->
+      <section id="section-1">
+        <h1>1. はじめに</h1>
+        
+        <h3 id="section-1-1">1.1 LVTT のコンセプトと特徴</h3>
+        <p><strong>Local Virtual ThinkTank (LVTT)</strong> は、未公開の新規事業企画、特許知財、社外秘データ、ソースコードなどの機密情報を安全にブレインストーミングするための、<strong>完全オンプレミス型AIマルチエージェント意思決定支援システム</strong>です。</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 30%;">コア機能</th>
+              <th>提供価値とメリット</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>🔒 完全閉域・プライバシー保護</strong></td>
+              <td>外部クラウドやサードパーティAPIへのデータ送信を一切遮断。社内LAN/Tailscale内のOllamaローカルLLMのみで推論を完結させ、漏洩リスクをゼロにします。</td>
+            </tr>
+            <tr>
+              <td><strong>🤖 AIマルチエージェント自律議論</strong></td>
+              <td>異なる専門性と視点を持つ3名のAI（ファシリテーター、発散役、論理批判役など）が自律周回ブレストを展開し、多角的な知見を導き出します。</td>
+            </tr>
+            <tr>
+              <td><strong>💾 発言単位の即時永続化</strong></td>
+              <td>1発言生成ごとにPostgreSQLへ即時コミット。サーバー再起動やブラウザ切断が発生しても、100%安全に議論を復元・再開できます。</td>
+            </tr>
+            <tr>
+              <td><strong>👤 人間介入（HITL）</strong></td>
+              <td>人間（ユーザー）がオーナーとしていつでも議論に割り込み指示を投稿可能。AIが即座に指示を反映して軌道修正します。</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 id="section-1-2">1.2 全体ワークフロー</h3>
+        <p>会議の準備から自律議論、議事録確定、次フェーズへの引き継ぎまでは以下の5ステップで進行します。</p>
+
+        <div class="diagram-figure">
+          <img src="../images/workflow_steps.svg" alt="LVTT ワークフローステップ">
+          <div class="diagram-caption">図 1: LVTT 議論ライフサイクルと操作ステップ</div>
+        </div>
+
+        <h3 id="section-1-3">1.3 アクセス方法と共通ナビゲーション</h3>
+        <p>社内LANまたはVPN経由でブラウザを開き、アクセスします：<br>
+        <code>http://alirex-labs:8089</code> または <code>http://&lt;ホストIP&gt;:8089</code></p>
+
+        <p>画面上部には共通のナビゲーションヘッダーが常駐しています：</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ボタン / 表示</th>
+              <th>機能</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>🔒 100% Local</code></td>
+              <td>外部クラウドへの送信がなく、完全ローカル推論中であることを示す安心バッジです。</td>
+            </tr>
+            <tr>
+              <td><code>新規会議</code></td>
+              <td>新しい会議のテーマ入力・助走画面（<code>/</code>）を開きます。</td>
+            </tr>
+            <tr>
+              <td><code>会議履歴</code></td>
+              <td>過去の会議アーカイブ・議事録一覧画面（<code>/history</code>）を開きます。</td>
+            </tr>
+            <tr>
+              <td><code>会議室へ</code></td>
+              <td>直近のアクティブな会議室画面（<code>/room</code>）へワンクリックで復帰します。</td>
+            </tr>
+            <tr>
+              <td><code>設定</code></td>
+              <td>ダークモード切り替えやOllama接続状態確認画面（<code>/settings</code>）を開きます。</td>
+            </tr>
+            <tr>
+              <td><code>About</code></td>
+              <td>システムのバージョン番号（<code>v0.2.2</code>）や技術スタックを確認します。</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- 第2章 -->
+      <section id="section-2">
+        <h2>2. 会議の準備（助走モード &amp; プロデュース）</h2>
+        
+        <h3 id="section-2-1">2.1 会議テーマと前提情報の入力</h3>
+        <p>新規会議画面では、ユーザーが入力した曖昧なテーマから密度の高い議論を設計する「助走モード」が用意されています。</p>
+
+        <div class="callout callout-tip">
+          <div class="callout-title">💡 テキストエリアの自動伸縮機能 (Auto-Grow)</div>
+          会議テーマや制約メモの入力欄は、文字数や改行に応じて入力枠の高さが自動的に下へ伸びます。初期状態のコンパクトさを保ちつつ、長文の制約や前提も快適に入力・一覧できます。
+        </div>
+
+        <div class="diagram-figure">
+          <img src="../images/actual_setup.png" alt="助走モード・新規会議画面">
+          <div class="diagram-caption">図 2: 助走モード・新規会議画面（複数行自動伸縮入力 &amp; 100% Local バッジ）</div>
+        </div>
+
+        <h3 id="section-2-2">2.2 議論モードの選定</h3>
+        <p>目的に応じて最適な議論進行フレームワークを選択します：</p>
+        <ul>
+          <li><strong>ゼロイチ発散モード</strong>: 未踏領域のアイデア出し。ブレインストーミング向け。</li>
+          <li><strong>企画ブラッシュアップモード</strong>: 既存企画の具体化、欠陥検証、実行プランの磨き上げ。</li>
+          <li><strong>ターゲット検証モード</strong>: ユーザーの本当の課題（ペイン）、代替手段、導入障壁の分析。</li>
+          <li><strong>リスク洗い出しモード</strong>: 死角の徹底検証、セキュリティ・法的制約、コンティンジェンシープラン。</li>
+          <li><strong>SWOT分析モード</strong>: 強み・弱み・機会・脅威の4象限を整理した戦略策定。</li>
+        </ul>
+
+        <h3 id="section-2-3">2.3 議論言語と最大ラウンド数</h3>
+        <ul>
+          <li><strong>議論言語</strong>: <code>日本語</code> / <code>英語</code> / <code>英語（和訳要約）</code> を選択可能。</li>
+          <li><strong>最大ラウンド数</strong>: 各エージェントが発言する周回数。初期値は 3〜5 周回（会議室で動的に延長可能）。</li>
+        </ul>
+
+        <h3 id="section-2-4">2.4 プロデューサーAIによる自動設計</h3>
+        <p><strong>「✨ プロデューサーAIに会議を設計させる」</strong> を押すと、ローカルLLMが瞬時にテーマを分析し、右ペインに以下の設計図をプレビュー生成します。</p>
+
+        <h3 id="section-2-5">2.5 プレビュー確認とチューニング</h3>
+        <p>自動生成された「会議ゴール」「主要論点3点」「選定ペルソナ3名の特化プロンプト」を確認し、必要があればテキストエリアで直接微修正します。準備が整ったら <strong>「🚀 この構成で会議を開始する」</strong> をクリックして会議室に入場します。</p>
+      </section>
+
+      <!-- 第3章 -->
+      <section id="section-3">
+        <h2>3. 会議室（メインダッシュボード）の操作</h2>
+
+        <div class="diagram-figure">
+          <img src="../images/actual_room.png" alt="会議室メインダッシュボード">
+          <div class="diagram-caption">図 3: 実際の会議室ダッシュボード（左右2ペイン ＋ フッターコントロール）</div>
+        </div>
+
+        <h3 id="section-3-1">3.1 画面の見方（2ペイン構成）</h3>
+        <ul>
+          <li><strong>左サイドバー（アジェンダ ＆ 参加エージェント）</strong>:
+            <ul>
+              <li><strong>会議アジェンダ</strong>: 会議タイトル、言語、前提メモ、達成ゴール、および主要論点（3点）がカード形式で常駐します。</li>
+              <li><strong>参加エージェント</strong>: 参加中の3名のペルソナ情報、役割、アバター、現在の状態（「待機中」「発言思考中」）を表示。思考中はカードが緑色に点滅します。アコーディオンを開くと特化プロンプトも確認できます。</li>
+            </ul>
+          </li>
+          <li><strong>右メインペイン（議論タイムライン）</strong>:
+            <ul>
+              <li>発言カードが時系列順にストリーミング表示されます（話者名、役割、発言本文、トークン数、生成時刻）。</li>
+              <li>AIが推論中は、中央に「🤖 AIが次の発言を思考中...」インジケータが表示されます。</li>
+              <li>発言右上のリプレイアイコンから、過去の発言を指定して巻き戻し・再思考（再生成）させることも可能です。</li>
+            </ul>
+          </li>
+          <li><strong>フッターバー（操作コントロール ＆ 人間介入）</strong>:
+            <ul>
+              <li>下部に人間介入用の入力フォームと、議論の進行制御ボタン群が常駐します。</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3 id="section-3-2">3.2 議論の進行制御</h3>
+        <p>画面下部のコントロールバーから、リアルタイムに議論のペースを制御できます：</p>
+        <ul>
+          <li><code>⏸ 一時停止 / ▶ 再開</code>: 自律議論ループを一時中断、または再開します。発言を熟読したり、介入をじっくり推敲する際に便利です。</li>
+          <li><code>⏭ 次へ</code>: 次順のエージェントの発言生成を手動で即座にトリガーします。</li>
+          <li><code>➕ +1R</code>: 最大ラウンド数をワンクリックで+1延長します。</li>
+          <li><code>⚙️ 調整</code>: ラウンド数の上限をダイアログから任意の数値に変更できます。</li>
+          <li><code>⏹ 終了 &amp; 議事録</code>: 途中でも議論を確定・終了し、<strong>AIによる構造化議事録（サマリー）の自動生成</strong>を開始します。</li>
+        </ul>
+
+        <h3 id="section-3-3">3.3 ラウンド数の動的延長・早期収束</h3>
+        <p>議論をさらに深掘りしたい場合は <code>➕ +1R</code> または <code>⚙️ 調整</code> でラウンド数を増やします。逆に十分な結論が出た場合は、<code>⏹ 終了 &amp; 議事録</code> を押すことでいつでも即座に議論を収束させられます。</p>
+
+        <h3 id="section-3-4">3.4 人間介入（HITL: Human-in-the-Loop）</h3>
+        <p>議論の最中、人間がオーナーとしていつでも指示を割り込ませることができます：</p>
+        <ol>
+          <li>画面下部の入力欄に指示を入力（例: <em>「外部API遮断の前提を最優先し、ローカル推論に特化した軽量構成に絞ってください」</em>）。</li>
+          <li><code>➤ 指示介入</code>（または <kbd>Ctrl + Enter</kbd>）を押す。</li>
+          <li>タイムラインに琥珀色（Amber）の介入カードが挿入され、<strong>次順のAIが最優先指示として受け取って議論の舵を切ります</strong>。</li>
+        </ol>
+
+        <h3 id="section-3-5">3.5 停滞検知とエスカレーション</h3>
+        <p>エージェント間の議論が堂々巡りになったり前提判断がつかない膠着状態を検知すると、琥珀色のエスカレーションバーとダイアログが表示され、人間に判断を要請します。</p>
+      </section>
+
+      <!-- 第4章 -->
+      <section id="section-4">
+        <h2>4. 議事録の確定・編集とセキュアエクスポート</h2>
+        
+        <h3 id="section-4-1">4.1 構造化議事録（サマリー）の自動生成</h3>
+        <p>設定された最大ラウンド数に達するか、下部の <strong>「⏹ 終了 &amp; 議事録」</strong> を押すと、タイムライン最下部に<strong>包括的な構造化議事録カード</strong>が自動生成されます：</p>
+        <ul>
+          <li><strong>🎯 結論・方向性 (Executive Summary)</strong>: 議論全体の総括と導かれた方針</li>
+          <li><strong>✅ 決定事項 (Decisions)</strong>: 合意された具体的な決定項目一覧</li>
+          <li><strong>💡 主要論点 (Key Points)</strong>: 深掘りされた各テーマの考察</li>
+          <li><strong>📌 残課題・イシュー (Open Issues)</strong>: 今後検証が必要な未決事項</li>
+          <li><strong>⚡ ネクストアクション (Action Items)</strong>: 具体的な次の一歩</li>
+        </ul>
+
+        <h3 id="section-4-2">4.2 議事録の直接編集（推敲・手動保存）</h3>
+        <p>生成された議事録カード右上の <strong>「✏️ 議事録編集」</strong> を押すとインライン編集モードになり、文言の追記やニュアンスの微修正を行えます。<strong>「💾 保存する」</strong> を押すと、PostgreSQLデータベースに即座に最新状態が永続化されます。</p>
+
+        <h3 id="section-4-3">4.3 Markdown / JSON ダウンロード</h3>
+        <p><strong>「📥 エクスポート」</strong> ボタンから以下の形式で手元にダウンロードできます：</p>
+        <ul>
+          <li><code>Markdown (.md)</code>: 社内Wiki（GitLab, Backlog, Notion等）にそのまま貼付できる美しく整形された議事録。</li>
+          <li><code>JSON (.json)</code>: 全参加者の発言本文・メタデータを含む完全な機械可読バックアップ。</li>
+        </ul>
+      </section>
+
+      <!-- 第5章 -->
+      <section id="section-5">
+        <h2>5. 議論リレー（次フェーズ引き継ぎ）</h2>
+        
+        <h3 id="section-5-1">5.1 リレー機能の概要</h3>
+        <p>前回の会議で導き出された「決定事項」と「残課題」をそのまま引き継ぎ、別の専門AIチームで次フェーズの深掘りを行う機能です。</p>
+
+        <h3 id="section-5-2">5.2 前回のサマリーから連続会議を開催する</h3>
+        <p>会議終了後、<strong>「⚡ 前回のサマリーから次フェーズを自動設計」</strong> をクリックするだけで、文脈を引き継いだ状態で助走モードが立ち上がります。</p>
+      </section>
+
+      <!-- 第6章 -->
+      <section id="section-6">
+        <h2>6. 会議履歴・過去ログ管理</h2>
+        
+        <h3 id="section-6-1">6.1 履歴一覧の閲覧</h3>
+        <p>ヘッダーの「会議履歴」から、過去の会議カード一覧（モード、参加ペルソナ、発言数、開催日時）を確認できます。</p>
+
+        <div class="diagram-figure">
+          <img src="../images/actual_history.png" alt="会議履歴一覧画面">
+          <div class="diagram-caption">図 4: 過去のAI会議ログ &amp; 議事録アーカイブ（ステータスバッジ、参加AI、リレー・入室ボタン）</div>
+        </div>
+
+        <h3 id="section-6-2">6.2 キーワード検索と絞り込みフィルタ</h3>
+        <p>上部の検索バーから、会議名や議論モード、完了状態での高速絞り込みが可能です。</p>
+
+        <h3 id="section-6-3">6.3 閲覧・再開・完全削除</h3>
+        <ul>
+          <li><code>会議室を開く</code>: 過去ログの閲覧や、中断した会議の再開ができます。</li>
+          <li><code>🗑️ 削除</code>: 不要な会議データをデータベースから完全に消去します。</li>
+        </ul>
+      </section>
+
+      <!-- 第7章 -->
+      <section id="section-7">
+        <h2>7. システム設定と製品情報</h2>
+        
+        <h3 id="section-7-1">7.1 テーマ切り替え</h3>
+        <p>「設定」画面から、ライトモード（和紙調）とダークモード（漆黒調）を切り替えられます。</p>
+
+        <h3 id="section-7-2">7.2 インフラ稼働状態の確認</h3>
+        <p>社内Ollamaサーバーとの通信状態やロード中モデル（<code>qwen2.5:3b</code> 等）を確認できます。</p>
+
+        <div class="diagram-figure">
+          <img src="../images/actual_settings.png" alt="システム設定画面">
+          <div class="diagram-caption">図 5: システム設定 &amp; インフラ一元管理画面</div>
+        </div>
+
+        <h3 id="section-7-3">7.3 About 画面確認</h3>
+        <p>「About」画面で、現在のシステムバージョン（<code>v0.2.2</code>）とGitコミットハッシュが確認できます。</p>
+
+        <div class="diagram-figure">
+          <img src="../images/actual_about.png" alt="About製品情報画面">
+          <div class="diagram-caption">図 6: 製品情報 &amp; 概要画面（v0.2.2 バージョンバッジ表示）</div>
+        </div>
+      </section>
+
+      <!-- 第8章 -->
+      <section id="section-8">
+        <h2>8. よくある質問 (FAQ)</h2>
+        
+        <div class="callout callout-info">
+          <div class="callout-title">Q. ブラウザを誤って閉じたりPCがスリープした場合は？</div>
+          <strong>A.</strong> すべての発言は1件ごとに即時コミットされています。PC復帰後に「会議室へ」または「会議履歴」から開くだけで、中断時の状態から完全に再開できます。
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Q. AIの思考時間が長い場合は？</div>
+          <strong>A.</strong> 1発言あたり通常5〜15秒程度で生成されます。タイムライン上の思考中インジケータ（緑色点滅）が表示されていれば正常に推論処理中です。
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">Q. 会議履歴で過去データが表示されない場合は？</div>
+          <strong>A.</strong> 本番DBに会議がまだ作成されていないか、テーブルカラムが未適用の可能性があります。最新バージョン（v0.2.2）ではコンテナ起動時に自動で差分カラムが補完されます。
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- フッター -->
+  <footer class="site-footer">
+    <p>© 2026 Alirex Labs / Local Virtual ThinkTank Project. All rights reserved.</p>
+    <p>Version: v0.2.2 | On-Premise AI Multi-Agent ThinkTank System</p>
+  </footer>
+
+  <script>
+    // スクロール追従による目次アクティブ表示
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          document.querySelectorAll('.toc-list a').forEach(a => {
+            if (a.getAttribute('href') === `#${id}`) {
+              a.classList.add('active');
+            } else {
+              a.classList.remove('active');
+            }
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    document.querySelectorAll('section[id], h3[id]').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
