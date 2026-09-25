@@ -1,1186 +1,342 @@
 <!DOCTYPE html>
 <html lang="ja" data-theme="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Local Virtual ThinkTank (LVTT) | 完全プライベートAIマルチエージェント会議室</title>
   <meta name="description" content="機密情報を扱える、完全プライベートなAIマルチエージェント会議室。外部クラウド送信ゼロ・Ollamaローカル推論による安全なアイデア発散と意思決定支援システム。">
-  
-  <!-- Google Fonts: 禅デザインシステム準拠（Shippori Mincho / Noto Serif JP / Inter / JetBrains Mono） -->
+
+  <!-- Google Fonts: Shippori Mincho / Cinzel / Noto Sans JP / JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700;900&family=Shippori+Mincho:wght@500;700;800&display=swap" rel="stylesheet">
-
-  <style>
-    /* ==========================================================================
-       Zen (禅) UI Design System - CSS Tokens (仕様書準拠)
-       ========================================================================== */
-    :root {
-      /* 2.1 コアパレット（禅・ライトモード: 鳥の子色・素色・深墨） */
-      --zen-surface: #FAF9F6;          /* 鳥の子色 (ベース背景) */
-      --zen-surface-raised: #FFFFFF;   /* 素色 (カード・浮き出し要素) */
-      --zen-surface-hover: #F5F4EE;    /* わずかに温かみのあるホバー */
-      --zen-primary: #2D3A3A;          /* 深墨 (メインアクション・重要見出し) */
-      --zen-primary-hover: #1F2828;
-      --zen-secondary: #D2B48C;        /* 枯草色 / 生成り (アクセントタグ・選択) */
-      --zen-secondary-light: #F4EBE1;
-      --zen-text-primary: #1A1A1A;     /* 漆黒 (本文高コントラスト) */
-      --zen-text-secondary: #555555;   /* 薄墨 (説明文・補足) */
-      --zen-text-muted: #888888;       /* 灰墨 (注釈・ラベル) */
-      --zen-border: #E8E6DF;           /* 灰白 (1px繊細な境界線) */
-      --zen-border-focus: #2D3A3A;
-
-      /* 和の伝統色アクセント */
-      --zen-gold: #C5A059;             /* 金茶 (プレミアム・達成・人間介入) */
-      --zen-vermilion: #B22222;        /* 深緋 (重要注意・エラー) */
-      --zen-teal: #3B6978;             /* 青磁 (サブ・推論サーバー・知性) */
-      --zen-green: #4A6B4F;            /* 若草 / 翡翠 (成功・100% Local安心バッジ) */
-
-      /* 3.1 フォントスタック */
-      --font-serif: "Shippori Mincho", "Noto Serif JP", serif;
-      --font-sans: "Inter", "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --font-mono: "JetBrains Mono", monospace;
-
-      /* 4.1 スペーシング (8pt グリッドシステム) */
-      --space-2xs: 2px;
-      --space-xs: 4px;
-      --space-sm: 8px;
-      --space-md: 16px;
-      --space-lg: 24px;
-      --space-xl: 32px;
-      --space-2xl: 48px;
-      --space-3xl: 64px;
-
-      /* 5.1 角丸 (Border Radius) */
-      --radius-sm: 4px;
-      --radius-md: 8px;
-      --radius-lg: 16px;
-      --radius-full: 9999px;
-
-      /* 5.2 エレベーション（境界線 ＋ 微細シャドウ） */
-      --shadow-sm: 0 1px 3px rgba(45, 58, 58, 0.04), 0 1px 2px rgba(45, 58, 58, 0.02);
-      --shadow-md: 0 4px 16px rgba(45, 58, 58, 0.06), 0 1px 3px rgba(45, 58, 58, 0.03);
-      --shadow-lg: 0 12px 32px rgba(45, 58, 58, 0.08), 0 2px 6px rgba(45, 58, 58, 0.04);
-
-      /* 7. モーション (所作 - Shosa) */
-      --transition-fast: 150ms cubic-bezier(0.4, 0.0, 0.2, 1);
-      --transition-normal: 250ms cubic-bezier(0.2, 0.8, 0.2, 1);
-      --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* 漆 (Urushi) ダークモード設定 (仕様書 2.2 準拠) */
-    [data-theme="dark"] {
-      --zen-surface: #141414;          /* 深みのある漆黒 */
-      --zen-surface-raised: #1F1D1D;   /* ほのかに赤みを帯びた黒漆 */
-      --zen-surface-hover: #2A2626;
-      --zen-primary: #C33C23;          /* 本朱 / 朱塗り (主アクセント) */
-      --zen-primary-hover: #D9482D;
-      --zen-secondary: #D4AF37;        /* 金箔色 */
-      --zen-secondary-light: #2D2617;
-      --zen-text-primary: #F0F0F0;     /* 和紙白 */
-      --zen-text-secondary: #A09A98;   /* 灰墨 */
-      --zen-text-muted: #736D6B;
-      --zen-border: #3D3230;           /* 漆境界線 */
-      --zen-border-focus: #C33C23;
-      --zen-gold: #D4AF37;
-      --zen-vermilion: #C33C23;
-      --zen-teal: #4D8B9E;
-      --zen-green: #3D9B6E;
-      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background-color: var(--zen-surface);
-      color: var(--zen-text-primary);
-      font-family: var(--font-sans);
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-      transition: background-color var(--transition-normal), color var(--transition-normal);
-      overflow-x: hidden;
-    }
-
-    /* 禅の微細な和紙テクスチャ表現（控えめなグラデーション） */
-    .zen-texture-bg {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      background: 
-        radial-gradient(circle at 10% 20%, rgba(200, 190, 175, 0.05) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(59, 105, 120, 0.04) 0%, transparent 40%);
-    }
-
-    /* ==========================================================================
-       ナビゲーションバー（一期一会の佇まい）
-       ========================================================================== */
-    nav.zen-navbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background-color: rgba(250, 249, 246, 0.92);
-      border-bottom: 1px solid var(--zen-border);
-      padding: 14px 36px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: all var(--transition-normal);
-    }
-
-    [data-theme="dark"] nav.zen-navbar {
-      background-color: rgba(20, 20, 20, 0.92);
-    }
-
-    .nav-brand-group {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .nav-logo-box {
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      border: 1px solid var(--zen-border);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .nav-logo-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .nav-brand-title {
-      font-family: var(--font-serif);
-      font-size: 19px;
-      font-weight: 700;
-      color: var(--zen-text-primary);
-      letter-spacing: 0.03em;
-    }
-
-    .nav-badge-local {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: var(--zen-surface-raised);
-      border: 1px solid var(--zen-border);
-      color: var(--zen-green);
-      font-size: 11.5px;
-      font-weight: 600;
-      padding: 3px 10px;
-      border-radius: var(--radius-full);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .nav-links-wrap {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-    }
-
-    .nav-link {
-      color: var(--zen-text-secondary);
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: color var(--transition-fast);
-      letter-spacing: 0.02em;
-    }
-
-    .nav-link:hover {
-      color: var(--zen-primary);
-    }
-
-    [data-theme="dark"] .nav-link:hover {
-      color: var(--zen-gold);
-    }
-
-    /* テーマ切り替えボタン (所作) */
-    .theme-toggle-btn {
-      background: var(--zen-surface-raised);
-      border: 1px solid var(--zen-border);
-      border-radius: var(--radius-full);
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: var(--zen-text-primary);
-      font-size: 15px;
-      transition: var(--transition-fast);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .theme-toggle-btn:hover {
-      background-color: var(--zen-surface-hover);
-      border-color: var(--zen-border-focus);
-      transform: translateY(-1px);
-    }
-
-    /* 禅ボタン仕様 (仕様書 6.1 準拠) */
-    .zen-btn-manual {
-      background-color: var(--zen-primary);
-      color: #FFFFFF !important;
-      border: 1px solid transparent;
-      padding: 8px 18px;
-      border-radius: var(--radius-md);
-      font-size: 13.5px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: var(--transition-normal);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .zen-btn-manual:hover {
-      background-color: var(--zen-primary-hover);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-md);
-    }
-
-    [data-theme="dark"] .zen-btn-manual {
-      background-color: var(--zen-primary);
-      color: #FFFFFF !important;
-    }
-
-    [data-theme="dark"] .zen-btn-manual:hover {
-      background-color: #D9482D;
-    }
-
-    /* ==========================================================================
-       メインレイアウト & 間 (Ma) の美学
-       ========================================================================== */
-    main.zen-container {
-      position: relative;
-      z-index: 1;
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 0 var(--space-lg) var(--space-3xl);
-    }
-
-    /* ==========================================================================
-       ヒーローセクション
-       ========================================================================== */
-    .zen-hero {
-      text-align: center;
-      padding: 72px 0 48px;
-    }
-
-    .zen-hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--zen-surface-raised);
-      border: 1px solid var(--zen-border);
-      padding: 5px 16px;
-      border-radius: var(--radius-full);
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--zen-text-secondary);
-      margin-bottom: var(--space-lg);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .zen-hero-title {
-      font-family: var(--font-serif);
-      font-size: clamp(32px, 4.8vw, 50px);
-      font-weight: 800;
-      line-height: 1.35;
-      letter-spacing: 0.04em;
-      margin-bottom: var(--space-md);
-      color: var(--zen-text-primary);
-    }
-
-    .zen-hero-title span.accent-ink {
-      color: var(--zen-teal);
-    }
-
-    [data-theme="dark"] .zen-hero-title span.accent-ink {
-      color: var(--zen-primary);
-    }
-
-    .zen-hero-lead {
-      font-size: clamp(15px, 1.8vw, 17px);
-      color: var(--zen-text-secondary);
-      max-width: 720px;
-      margin: 0 auto var(--space-xl);
-      line-height: 1.85;
-      font-weight: 400;
-    }
-
-    .zen-hero-actions {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: var(--space-md);
-      margin-bottom: var(--space-2xl);
-      flex-wrap: wrap;
-    }
-
-    .zen-btn-primary {
-      background-color: var(--zen-primary);
-      color: #FFFFFF;
-      padding: 12px 28px;
-      border-radius: var(--radius-md);
-      font-size: 15px;
-      font-weight: 600;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: var(--transition-normal);
-      border: none;
-      cursor: pointer;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .zen-btn-primary:hover {
-      background-color: var(--zen-primary-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .zen-btn-secondary {
-      background-color: var(--zen-surface-raised);
-      color: var(--zen-text-primary);
-      padding: 12px 26px;
-      border-radius: var(--radius-md);
-      font-size: 15px;
-      font-weight: 600;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: var(--transition-normal);
-      border: 1px solid var(--zen-border);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .zen-btn-secondary:hover {
-      background-color: var(--zen-surface-hover);
-      border-color: var(--zen-text-muted);
-      transform: translateY(-2px);
-    }
-
-    /* ヒーロー実機プレビュー（余白と額縁） */
-    .zen-preview-frame {
-      background-color: var(--zen-surface-raised);
-      border: 1px solid var(--zen-border);
-      border-radius: var(--radius-lg);
-      padding: 12px;
-      box-shadow: var(--shadow-lg);
-      max-width: 1040px;
-      margin: 0 auto;
-      transition: transform var(--transition-normal), box-shadow var(--transition-normal);
-    }
-
-    .zen-preview-frame:hover {
-      box-shadow: 0 16px 44px rgba(45, 58, 58, 0.12);
-    }
-
-    .zen-preview-inner {
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      border: 1px solid var(--zen-border);
-      background-color: #000;
-    }
-
-    .zen-preview-inner img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    /* ==========================================================================
-       セクション見出し（引き算の美学）
-       ========================================================================== */
-    .zen-section-header {
-      text-align: center;
-      margin: 88px 0 44px;
-    }
-
-    .zen-section-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      font-weight: 600;
-      color: var(--zen-teal);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-      display: block;
-    }
-
-    [data-theme="dark"] .zen-section-eyebrow {
-      color: var(--zen-gold);
-    }
-
-    .zen-section-title {
-      font-family: var(--font-serif);
-      font-size: clamp(24px, 3vw, 34px);
-      font-weight: 800;
-      color: var(--zen-text-primary);
-      margin-bottom: 12px;
-      letter-spacing: 0.03em;
-    }
-
-    .zen-section-desc {
-      font-size: 14.5px;
-      color: var(--zen-text-secondary);
-      max-width: 580px;
-      margin: 0 auto;
-      line-height: 1.8;
-    }
-
-    /* ==========================================================================
-       コアバリュー（3大特徴）カード仕様 (仕様書 6.3 準拠)
-       ========================================================================== */
-    .zen-grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-      gap: var(--space-lg);
-    }
-
-    .zen-feature-card {
-      background-color: var(--zen-surface-raised);
-      border: 1px solid var(--zen-border);
-      border-radius: var(--radius-md);
-      padding: 30px 24px;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition-normal);
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* 和の色彩アクセントバー (2px細線: 仕様書 6.3) */
-    .zen-feature-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background-color: var(--zen-primary);
-      opacity: 0.8;
-    }
-
-    .zen-feature-card.teal::before { background-color: var(--zen-teal); }
-    .zen-feature-card.gold::before { background-color: var(--zen-gold); }
-
-    .zen-feature-card:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-3px);
-      border-color: var(--zen-border-focus);
-    }
-
-    .zen-card-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 22px;
-      margin-bottom: var(--space-md);
-      background-color: var(--zen-surface);
-      border: 1px solid var(--zen-border);
-    }
-
-    .zen-card-title {
-      font-family: var(--font-serif);
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--zen-text-primary);
-      margin-bottom: 10px;
-      letter-spacing: 0.02em;
-    }
-
-    .zen-card-body {
-      font-size: 13.8px;
-      color: var(--zen-text-secondary);
-      line-height: 1.75;
-    }
-
-    /* ==========================================================================
-       ワークフローセクション
-       ========================================================================== */
-    .zen-workflow-panel {
-      background-color: var(--zen-surface-raised);
-      border: 1px solid var(--zen-border);
-      border-radius: var(--radius-lg);
-      padding: var(--space-xl);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .zen-workflow-img-box {
-      text-align: center;
-      margin-bottom: var(--space-xl);
-    }
-
-    .zen-workflow-img-box img {
-      max-width: 100%;
-      height: auto;
-      border-radius: var(--radius-md);
-    }
-
-    .zen-steps-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: var(--space-md);
-    }
-
-    .zen-step-item {
-      background-color: var(--zen-surface);
-      border: 1px solid var(--zen-border);
-      border-radius: var(--radius-md);
-      padding: var(--space-md);
-      transition: var(--transition-normal);
-    }
-
-    .zen-step-item:hover {
-      background-color: var(--zen-surface-hover);
-      border-color: var(--zen-text-muted);
-    }
-
-    .zen-step-label {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--zen-teal);
-      letter-spacing: 0.05em;
-      margin-bottom: 4px;
-    }
-
-    [data-theme="dark"] .zen-step-label {
-      color: var(--zen-gold);
-    }
-
-    .zen-step-name {
-      font-family: var(--font-serif);
-      font-size: 14.5px;
-      font-weight: 700;
-      color: var(--zen-text-primary);
-      margin-bottom: 6px;
-    }
-
-    .zen-step-desc {
-      font-size: 12.5px;
-      color: var(--zen-text-secondary);
-      line-height: 1.6;
-    }
-
-    /* ==========================================================================
-       実機インタラクティブショーケース（漆器を鑑賞するような体験）
-       ========================================================================== */
-    .zen-showcase-panel {
-      background-color: var(--zen-surface-raised);
-      border: 1px solid var(--zen-border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
-    }
-
-    .zen-tab-nav {
-      display: flex;
-      border-bottom: 1px solid var(--zen-border);
-      background-color: var(--zen-surface);
-      overflow-x: auto;
-    }
-
-    .zen-tab-btn {
-      padding: 14px 22px;
-      font-size: 13.5px;
-      font-weight: 600;
-      color: var(--zen-text-secondary);
-      cursor: pointer;
-      border: none;
-      background: none;
-      transition: var(--transition-fast);
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-bottom: 2px solid transparent;
-      font-family: var(--font-sans);
-    }
-
-    .zen-tab-btn:hover {
-      color: var(--zen-text-primary);
-      background-color: var(--zen-surface-hover);
-    }
-
-    .zen-tab-btn.active {
-      color: var(--zen-primary);
-      border-bottom-color: var(--zen-primary);
-      background-color: var(--zen-surface-raised);
-    }
-
-    [data-theme="dark"] .zen-tab-btn.active {
-      color: var(--zen-primary);
-      border-bottom-color: var(--zen-primary);
-    }
-
-    .zen-showcase-body {
-      padding: var(--space-lg);
-    }
-
-    .zen-view-pane {
-      display: none;
-    }
-
-    .zen-view-pane.active {
-      display: block;
-      animation: zenFadeIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-
-    @keyframes zenFadeIn {
-      from { opacity: 0; transform: translateY(4px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .zen-img-frame {
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      border: 1px solid var(--zen-border);
-      box-shadow: var(--shadow-sm);
-      background-color: #000;
-    }
-
-    .zen-img-frame img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .zen-showcase-meta {
-      margin-top: 14px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13.5px;
-      color: var(--zen-text-secondary);
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .zen-tags-group {
-      display: flex;
-      gap: 6px;
-    }
-
-    .zen-tag {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: var(--radius-sm);
-      background-color: var(--zen-surface);
-      border: 1px solid var(--zen-border);
-      color: var(--zen-text-muted);
-    }
-
-    /* ==========================================================================
-       スペック・技術仕様グリッド
-       ========================================================================== */
-    .zen-specs-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: var(--space-md);
-    }
-
-    .zen-spec-card {
-      background-color: var(--zen-surface-raised);
-      border: 1px solid var(--zen-border);
-      border-radius: var(--radius-md);
-      padding: var(--space-md) var(--space-lg);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .zen-spec-cat {
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      color: var(--zen-text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 4px;
-    }
-
-    .zen-spec-core {
-      font-family: var(--font-serif);
-      font-size: 17px;
-      font-weight: 700;
-      color: var(--zen-text-primary);
-      margin-bottom: 6px;
-    }
-
-    .zen-spec-detail {
-      font-size: 12.8px;
-      color: var(--zen-text-secondary);
-      line-height: 1.65;
-    }
-
-    /* ==========================================================================
-       CTA バナー
-       ========================================================================== */
-    .zen-cta-box {
-      margin-top: 80px;
-      background-color: var(--zen-surface-raised);
-      border: 1px solid var(--zen-border);
-      border-radius: var(--radius-lg);
-      padding: 56px 36px;
-      text-align: center;
-      box-shadow: var(--shadow-md);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .zen-cta-box::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--zen-teal), var(--zen-primary), var(--zen-gold));
-    }
-
-    .zen-cta-title {
-      font-family: var(--font-serif);
-      font-size: clamp(24px, 3.5vw, 32px);
-      font-weight: 800;
-      color: var(--zen-text-primary);
-      margin-bottom: 12px;
-      letter-spacing: 0.03em;
-    }
-
-    .zen-cta-desc {
-      font-size: 15px;
-      color: var(--zen-text-secondary);
-      max-width: 600px;
-      margin: 0 auto 30px;
-      line-height: 1.8;
-    }
-
-    /* ==========================================================================
-       フッター
-       ========================================================================== */
-    footer.zen-footer {
-      border-top: 1px solid var(--zen-border);
-      padding: 44px 32px 36px;
-      background-color: var(--zen-surface-raised);
-      text-align: center;
-      font-size: 13px;
-      color: var(--zen-text-muted);
-    }
-
-    .zen-footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .zen-footer-links a {
-      color: var(--zen-text-secondary);
-      text-decoration: none;
-      transition: color var(--transition-fast);
-    }
-
-    .zen-footer-links a:hover {
-      color: var(--zen-primary);
-    }
-
-    /* レスポンシブ最適化 */
-    @media (max-width: 860px) {
-      nav.zen-navbar { padding: 12px 18px; }
-      .nav-links-wrap { gap: 12px; }
-      .nav-links-wrap a:not(.zen-btn-manual) { display: none; }
-      .zen-steps-row { grid-template-columns: 1fr; }
-      .zen-cta-box { padding: 40px 20px; }
-    }
-  </style>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Shippori+Mincho:wght@500;700;800&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
-  <div class="zen-texture-bg"></div>
-
-  <!-- ナビゲーションバー -->
-  <nav class="zen-navbar">
-    <a href="#" class="nav-brand-group">
-      <div class="nav-logo-box">
-        <img src="./images/logo.png" alt="LVTT Logo">
+  <!-- Navigation Bar (Shuhari 準拠) -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-brand">
+        <img src="./images/logo.png" alt="LVTT Logo" class="nav-logo-img">
+        <div>
+          <span class="nav-title">Local Virtual ThinkTank</span>
+          <span class="nav-sub">ON-PREMISE AI</span>
+        </div>
+        <span class="nav-badge-local">🔒 100% Local</span>
+      </a>
+      <div class="nav-links">
+        <a href="https://alirexlabs.github.io/" class="nav-back-link">← Alirex Labs.</a>
+        <a href="#features">コア価値</a>
+        <a href="#workflow">ワークフロー</a>
+        <a href="#showcase">画面体験</a>
+        <a href="#specs">技術仕様</a>
+        <a href="./manual/html/index.html" class="btn-cta">📖 操作マニュアル</a>
+        <button id="themeToggle" class="theme-toggle-btn" type="button" title="漆ダーク/禅ライト切り替え" onclick="toggleZenTheme()">
+          🌙
+        </button>
       </div>
-      <span class="nav-brand-title">Local Virtual ThinkTank</span>
-      <span class="nav-badge-local">🔒 100% Local</span>
-    </a>
-    <div class="nav-links-wrap">
-      <a href="https://alirexlabs.github.io/" class="nav-link" style="display: inline-flex; align-items: center; gap: 4px; font-weight: 600;">← Alirex Labs.</a>
-      <a href="#features" class="nav-link">特長</a>
-      <a href="#workflow" class="nav-link">ワークフロー</a>
-      <a href="#showcase" class="nav-link">画面体験</a>
-      <a href="#specs" class="nav-link">技術仕様</a>
-      <button class="theme-toggle-btn" id="themeToggle" title="漆ダーク/禅ライト切り替え" onclick="toggleZenTheme()">
-        🌙
-      </button>
-      <a href="./manual/html/index.html" class="zen-btn-manual">📖 操作マニュアルを開く</a>
     </div>
   </nav>
 
-  <main class="zen-container">
-
-    <!-- ヒーローセクション -->
-    <section class="zen-hero">
-      <div class="zen-hero-tag">
-        <span>✨ v0.2.2</span>
-        <span>•</span>
-        <span>鳥の子色と深墨が織りなす「禅」デザインシステム</span>
+  <!-- Hero Section (Shuhari 準拠) -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span>✦</span> v0.2.2 <span>•</span> 外部クラウド送信ゼロ <span>•</span> Ollamaローカル推論
       </div>
-
-      <h1 class="zen-hero-title">
+      <h1 class="hero-title">
         機密情報を扱える、<br>
-        <span class="accent-ink">完全プライベートなAIマルチエージェント会議室。</span>
+        <span>完全プライベートなAI会議室。</span>
       </h1>
-
-      <p class="zen-hero-lead">
+      <p class="hero-desc">
         未公開の新規事業企画、特許・知財戦略、社外秘メモ、ソースコード。<br>
-        外部クラウドへの送信を一切行わず、社内閉域網のローカルLLMのみで自律型ブレインストーミングを実現します。
+        外部クラウドへの送信を一切行わず、社内閉域網のローカルLLMのみで自律型ブレインストーミングと迅速な意思決定支援を実現します。
       </p>
-
-      <div class="zen-hero-actions">
-        <a href="./manual/html/index.html" class="zen-btn-primary">
+      <div class="hero-actions">
+        <a href="./manual/html/index.html" class="btn-cta">
           <span>📖 操作マニュアルを読む</span>
           <span>→</span>
         </a>
-        <a href="#showcase" class="zen-btn-secondary">
+        <a href="#showcase" class="btn-secondary">
           <span>🖼️ 実機画面を見る</span>
         </a>
       </div>
+    </div>
 
-      <!-- ヒーロー実機プレビュー（左右2ペイン画面） -->
-      <div class="zen-preview-frame">
-        <div class="zen-preview-inner">
-          <img src="./images/actual_room.png" alt="LVTT 会議室メイン画面（実機）">
-        </div>
+    <!-- ヒーロー右側実機プレビュー枠 -->
+    <div class="hero-preview-frame">
+      <div class="hero-preview-inner">
+        <img src="./images/actual_room.png" alt="LVTT 会議室メイン画面（実機）">
       </div>
-    </section>
+    </div>
+  </header>
 
-    <!-- コアバリュー（3大特徴） -->
-    <section id="features">
-      <div class="zen-section-header">
-        <span class="zen-section-eyebrow">Core Value Propositions</span>
-        <h2 class="zen-section-title">LVTTが選ばれる3つのコア価値</h2>
-        <p class="zen-section-desc">従来のクラウドAIでは扱えなかった最高機密の議論を、完全な安心感と高密度なマルチ視点で前進させます。</p>
-      </div>
+  <!-- コアバリュー（3大特徴） -->
+  <section id="features" class="section">
+    <div class="section-tag">Core Value Propositions</div>
+    <h2 class="section-title">LVTTが選ばれる3つのコア価値</h2>
+    <p class="section-lead">
+      従来のクラウドAIでは扱えなかった最高機密の議論を、完全な安心感と高密度なマルチ視点で前進させます。
+    </p>
 
-      <div class="zen-grid-3">
-        <!-- 特長 1 -->
-        <div class="zen-feature-card">
-          <div class="zen-card-icon">🔒</div>
-          <h3 class="zen-card-title">100% ローカル推論・閉域保護</h3>
-          <p class="zen-card-body">
-            外部クラウドAPIへのデータ送信は一切遮断。社内LAN/Proxmox VE上のOllama（Qwen 2.5 3B等）およびPostgreSQLのみで完結し、情報漏洩リスクを根本からゼロにします。
-          </p>
-        </div>
-
-        <!-- 特長 2 -->
-        <div class="zen-feature-card gold">
-          <div class="zen-card-icon">👥</div>
-          <h3 class="zen-card-title">3名の専門AIによる自律議論</h3>
-          <p class="zen-card-body">
-            進行役（ファシリテーター）、自由奔放な発散役、冷徹な論理批判役など、異なるペルソナを持つ3名のAIが自律周回ブレストを展開。単一プロンプトでは見落としがちな死角を洗い出します。
-          </p>
-        </div>
-
-        <!-- 特長 3 -->
-        <div class="zen-feature-card teal">
-          <div class="zen-card-icon">⚡</div>
-          <h3 class="zen-card-title">発言即時永続化 ＆ 人間介入 (HITL)</h3>
-          <p class="zen-card-body">
-            1発言ごとにDBへ即座にコミット。サーバー切断時も100%復元可能です。さらに人間がいつでも「指示介入」を割り込ませ、AIが即座に方針を切り替える柔軟性を備えています。
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ワークフロー -->
-    <section id="workflow">
-      <div class="zen-section-header">
-        <span class="zen-section-eyebrow">End-to-End Workflow</span>
-        <h2 class="zen-section-title">アイデアから意思決定までの4ステップ</h2>
-        <p class="zen-section-desc">曖昧なテーマ入力から、AIによる自律議論、構造化議事録の確定、次フェーズへの連続リレーまでシームレスに進行します。</p>
+    <div class="values-grid">
+      <!-- 特長 1 -->
+      <div class="value-card">
+        <div class="value-icon">🔒</div>
+        <h3 class="value-title">100% ローカル推論・閉域保護</h3>
+        <p class="value-body">
+          外部クラウドAPIへのデータ送信は一切遮断。社内LAN/Proxmox VE上のOllama（Qwen 2.5 3B等）およびPostgreSQLのみで完結し、情報漏洩リスクを根本からゼロにします。
+        </p>
       </div>
 
-      <div class="zen-workflow-panel">
-        <div class="zen-workflow-img-box">
-          <img src="./images/workflow_steps.svg" alt="LVTT ワークフローステップ">
-        </div>
-
-        <div class="zen-steps-row">
-          <div class="zen-step-item">
-            <div class="zen-step-label">Step 01</div>
-            <div class="zen-step-name">助走モード（自動分解）</div>
-            <div class="zen-step-desc">曖昧なテーマや制約メモから、プロデューサーAIがゴールと主要論点3点、最適ペルソナを自動設計。</div>
-          </div>
-          <div class="zen-step-item">
-            <div class="zen-step-label">Step 02</div>
-            <div class="zen-step-name">マルチエージェント議論</div>
-            <div class="zen-step-desc">3名のAIが自律ブレストを展開。オーナーは一時停止やラウンド延長、割り込み指示がいつでも可能。</div>
-          </div>
-          <div class="zen-step-item">
-            <div class="zen-step-label">Step 03</div>
-            <div class="zen-step-name">構造化議事録確定</div>
-            <div class="zen-step-desc">結論、決定事項、主要論点、残課題を自動整理。インライン直接編集やMarkdown/JSONダウンロードに対応。</div>
-          </div>
-          <div class="zen-step-item">
-            <div class="zen-step-label">Step 04</div>
-            <div class="zen-step-name">次フェーズ議論リレー</div>
-            <div class="zen-step-desc">前回のサマリー（決定事項・残課題）をワンクリックで引き継ぎ、新たなペルソナで連続会議を深化。</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 実機インタラクティブショーケース -->
-    <section id="showcase">
-      <div class="zen-section-header">
-        <span class="zen-section-eyebrow">Actual UI Showcase</span>
-        <h2 class="zen-section-title">実際の稼働中アプリケーション画面</h2>
-        <p class="zen-section-desc">余計な装飾を削ぎ落とした「和モダン（禅）× 静寂」のUI。実機キャプチャでその佇まいをご確認いただけます。</p>
+      <!-- 特長 2 -->
+      <div class="value-card gold">
+        <div class="value-icon">👥</div>
+        <h3 class="value-title">3名の専門AIによる自律議論</h3>
+        <p class="value-body">
+          進行役（ファシリテーター）、自由奔放な発散役、冷徹な論理批判役など、異なるペルソナを持つ3名のAIが自律周回ブレストを展開。単一プロンプトでは見落としがちな死角を洗い出します。
+        </p>
       </div>
 
-      <div class="zen-showcase-panel">
-        <div class="zen-tab-nav">
-          <button class="zen-tab-btn active" onclick="switchZenTab(0)">
-            <span>💬 会議室ダッシュボード</span>
-          </button>
-          <button class="zen-tab-btn" onclick="switchZenTab(1)">
-            <span>📝 助走モード（新規会議）</span>
-          </button>
-          <button class="zen-tab-btn" onclick="switchZenTab(2)">
-            <span>📚 会議履歴・ナレッジ</span>
-          </button>
-          <button class="zen-tab-btn" onclick="switchZenTab(3)">
-            <span>⚙️ システム設定</span>
-          </button>
-          <button class="zen-tab-btn" onclick="switchZenTab(4)">
-            <span>ℹ️ 製品情報 (About)</span>
-          </button>
+      <!-- 特長 3 -->
+      <div class="value-card teal">
+        <div class="value-icon">⚡</div>
+        <h3 class="value-title">発言即時永続化 ＆ 人間介入 (HITL)</h3>
+        <p class="value-body">
+          1発言ごとにDBへ即座にコミット。サーバー切断時も100%復元可能です。さらに人間がいつでも「指示介入」を割り込ませ、AIが即座に方針を切り替える柔軟性を備えています。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ワークフローセクション -->
+  <section id="workflow" class="section" style="background-color: var(--bg-surface); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+    <div class="section-tag">Workflow Architecture</div>
+    <h2 class="section-title">助走から確定までの全体フロー</h2>
+    <p class="section-lead">
+      テーマ設定からAIプロデュース、リアルタイム会議、そして構造化議事録の確定・出力までシームレスにつながります。
+    </p>
+
+    <div class="workflow-panel">
+      <!-- ワークフローステップ図 -->
+      <div class="workflow-img-box">
+        <img src="./images/workflow_steps.svg" alt="LVTT ワークフロー全体図">
+      </div>
+
+      <!-- ステップ解説グリッド -->
+      <div class="workflow-steps-row">
+        <div class="step-card">
+          <div class="step-badge">STEP 1</div>
+          <div class="step-title">助走モード（設定）</div>
+          <div class="step-desc">会議テーマ、前提情報、議論言語（日本語/英語）、議論モード（ディベート/ブレスト等）を入力します。</div>
         </div>
+        <div class="step-card">
+          <div class="step-badge">STEP 2</div>
+          <div class="step-title">AI自動プロデュース</div>
+          <div class="step-desc">プロデューサーAIが最適なエージェント編成とラウンド設計を提案。プレビューで確認・微修正が可能です。</div>
+        </div>
+        <div class="step-card">
+          <div class="step-badge">STEP 3</div>
+          <div class="step-title">自律議論 ＆ 人間介入</div>
+          <div class="step-desc">2ペイン画面で議論が進行。要約・論点がリアルタイム更新され、任意のタイミングで人間がコメント介入できます。</div>
+        </div>
+        <div class="step-card">
+          <div class="step-badge">STEP 4</div>
+          <div class="step-title">確定 ＆ エクスポート</div>
+          <div class="step-desc">構造化議事録の推敲・手動保存後、MarkdownやJSON形式で社内ナレッジとして安全にダウンロードします。</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="zen-showcase-body">
-          <!-- ビュー 0: 会議室 -->
-          <div class="zen-view-pane active">
-            <div class="zen-img-frame">
-              <img src="./images/actual_room_exe.png" alt="実際の会議室画面">
-            </div>
-            <div class="zen-showcase-meta">
-              <div><strong>左右2ペイン会議室</strong>: 左側にアジェンダと3名の参加AI、右側にリアルタイム思考＆発言タイムライン、下部にHITL介入バーを配置。</div>
-              <div class="zen-tags-group">
-                <span class="zen-tag">2-Pane Layout</span>
-                <span class="zen-tag">Human-in-the-Loop</span>
-                <span class="zen-tag">リアルタイムパルス</span>
-              </div>
-            </div>
+  <!-- 画面体験ショーケース（タブ切り替え） -->
+  <section id="showcase" class="section">
+    <div class="section-tag">Product Visuals</div>
+    <h2 class="section-title">実機画面で体感する、静謐な操作性</h2>
+    <p class="section-lead">
+      集中を妨げない「禅（Zen）デザインシステム」に則った、実際の画面UIをご覧ください。
+    </p>
+
+    <div class="showcase-panel">
+      <!-- タブナビゲーション -->
+      <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchZenTab(0)">
+          <span>🏛️</span> 会議室メイン画面
+        </button>
+        <button class="tab-btn" onclick="switchZenTab(1)">
+          <span>🚀</span> 助走モード（会議準備）
+        </button>
+        <button class="tab-btn" onclick="switchZenTab(2)">
+          <span>📚</span> 過去ログ・会議履歴
+        </button>
+        <button class="tab-btn" onclick="switchZenTab(3)">
+          <span>⚙️</span> システム設定 &amp; インフラ
+        </button>
+        <button class="tab-btn" onclick="switchZenTab(4)">
+          <span>ℹ️</span> About（製品情報）
+        </button>
+      </div>
+
+      <!-- タブボディ -->
+      <div class="showcase-body">
+        <!-- ビュー 0: 会議室 -->
+        <div class="view-pane active">
+          <div class="img-frame">
+            <img src="./images/actual_room.png" alt="LVTT 会議室メイン画面（実機）">
           </div>
-
-          <!-- ビュー 1: 助走モード -->
-          <div class="zen-view-pane">
-            <div class="zen-img-frame">
-              <img src="./images/actual_setup.png" alt="助走モード画面">
-            </div>
-            <div class="zen-showcase-meta">
-              <div><strong>助走モード & プロデュース</strong>: 文字量に応じて自動で高さが伸びるAuto-Grow入力欄と、ワンクリックでの会議自動設計。</div>
-              <div class="zen-tags-group">
-                <span class="zen-tag">Auto-Grow Textarea</span>
-                <span class="zen-tag">Producer AI</span>
-                <span class="zen-tag">5つの議論モード</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- ビュー 2: 会議履歴 -->
-          <div class="zen-view-pane">
-            <div class="zen-img-frame">
-              <img src="./images/actual_history.png" alt="会議履歴画面">
-            </div>
-            <div class="zen-showcase-meta">
-              <div><strong>会議履歴アーカイブ</strong>: 過去の議論カード一覧。高速キーワード検索、ワンクリック会議室再開、完全カスケード削除に対応。</div>
-              <div class="zen-tags-group">
-                <span class="zen-tag">Instant Search</span>
-                <span class="zen-tag">Session Resume</span>
-                <span class="zen-tag">PostgreSQL永続化</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- ビュー 3: システム設定 -->
-          <div class="zen-view-pane">
-            <div class="zen-img-frame">
-              <img src="./images/actual_settings.png" alt="システム設定画面">
-            </div>
-            <div class="zen-showcase-meta">
-              <div><strong>システム設定 ＆ インフラ管理</strong>: 禅ライト/漆ダークテーマ切り替え、Ollama推論サーバーの接続ステータスおよびモデル診断。</div>
-              <div class="zen-tags-group">
-                <span class="zen-tag">Theme Toggle</span>
-                <span class="zen-tag">Ollama Diagnostics</span>
-                <span class="zen-tag">Zero Cloud</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- ビュー 4: About -->
-          <div class="zen-view-pane">
-            <div class="zen-img-frame">
-              <img src="./images/actual_about.png" alt="製品情報画面">
-            </div>
-            <div class="zen-showcase-meta">
-              <div><strong>製品情報 & バージョン</strong>: 現在のシステムバージョン（v0.2.2）およびGitコミットハッシュの動的表示に対応。</div>
-              <div class="zen-tags-group">
-                <span class="zen-tag">Version v0.2.2</span>
-                <span class="zen-tag">Git Hash Linked</span>
-              </div>
+          <div class="showcase-meta">
+            <div><strong>会議室ダッシュボード</strong>: 左右2ペイン構成。左ペインで自律議論ログ、右ペインでリアルタイム論点・ToDo・サマリーを俯瞰。</div>
+            <div class="tags-group">
+              <span class="zen-tag">2-Pane Layout</span>
+              <span class="zen-tag">HITL 介入対応</span>
+              <span class="zen-tag">リアルタイム要約</span>
             </div>
           </div>
         </div>
+
+        <!-- ビュー 1: 助走モード -->
+        <div class="view-pane">
+          <div class="img-frame">
+            <img src="./images/actual_setup.png" alt="助走モード画面">
+          </div>
+          <div class="showcase-meta">
+            <div><strong>助走モード（Setup）</strong>: 会議の方向性を決める司令塔。プロデューサーAIがテーマから最適なエージェントの性格と議論モードを自動編成。</div>
+            <div class="tags-group">
+              <span class="zen-tag">AI Producer</span>
+              <span class="zen-tag">議論モード選定</span>
+              <span class="zen-tag">ラウンド数自動提案</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ビュー 2: 過去ログ -->
+        <div class="view-pane">
+          <div class="img-frame">
+            <img src="./images/actual_history.png" alt="過去ログ・履歴画面">
+          </div>
+          <div class="showcase-meta">
+            <div><strong>会議履歴 &amp; ナレッジ管理</strong>: 過去に開催された全セッションを一覧表示。キーワード検索・絞り込みフィルタ・議論の再開が可能。</div>
+            <div class="tags-group">
+              <span class="zen-tag">全文検索</span>
+              <span class="zen-tag">Markdown/JSON出力</span>
+              <span class="zen-tag">議論リレー</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ビュー 3: システム設定 -->
+        <div class="view-pane">
+          <div class="img-frame">
+            <img src="./images/actual_settings.png" alt="システム設定画面">
+          </div>
+          <div class="showcase-meta">
+            <div><strong>設定 &amp; インフラ監視</strong>: Ollamaの推論サーバー稼働状態、PostgreSQL接続状況、禅ライト/漆ダークテーマの切り替えを管理。</div>
+            <div class="tags-group">
+              <span class="zen-tag">Ollama Status</span>
+              <span class="zen-tag">DB Health</span>
+              <span class="zen-tag">テーマ切替</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ビュー 4: About -->
+        <div class="view-pane">
+          <div class="img-frame">
+            <img src="./images/actual_about.png" alt="製品情報画面">
+          </div>
+          <div class="showcase-meta">
+            <div><strong>製品情報 &amp; バージョン</strong>: 現在のシステムバージョン（v0.2.2）およびGitコミットハッシュの動的表示に対応。</div>
+            <div class="tags-group">
+              <span class="zen-tag">Version v0.2.2</span>
+              <span class="zen-tag">Git Hash Linked</span>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- 技術仕様・スペック -->
-    <section id="specs">
-      <div class="zen-section-header">
-        <span class="zen-section-eyebrow">Technical Architecture</span>
-        <h2 class="zen-section-title">完全オンプレミスを支える技術スタック</h2>
-        <p class="zen-section-desc">モダンかつ堅牢なオープンソース技術群を採用し、外部クラウド依存を完全に排除しています。</p>
+  <!-- 技術仕様・スペック -->
+  <section id="specs" class="section" style="background-color: var(--bg-surface); border-top: 1px solid var(--border-color);">
+    <div class="section-tag">Technical Architecture</div>
+    <h2 class="section-title">完全オンプレミスを支える技術スタック</h2>
+    <p class="section-lead">
+      モダンかつ堅牢なオープンソース技術群を採用し、外部クラウド依存を完全に排除しています。
+    </p>
+
+    <div class="specs-grid">
+      <div class="spec-card">
+        <div class="spec-cat">推論エンジン</div>
+        <div class="spec-core">Ollama (Qwen 2.5)</div>
+        <div class="spec-detail">Proxmox VE / RTX 4080 (VRAM 16GB) にて 3B / 7B モデルを高速ローカル実行。外部通信一切なし。</div>
       </div>
 
-      <div class="zen-specs-grid">
-        <div class="zen-spec-card">
-          <div class="zen-spec-cat">推論エンジン</div>
-          <div class="zen-spec-core">Ollama (Qwen 2.5)</div>
-          <div class="zen-spec-detail">Proxmox VE / RTX 4080 (VRAM 16GB) にて 3B / 7B モデルを高速ローカル実行。外部通信一切なし。</div>
-        </div>
-
-        <div class="zen-spec-card">
-          <div class="zen-spec-cat">Web / UI フレームワーク</div>
-          <div class="zen-spec-core">NiceGUI + FastAPI</div>
-          <div class="zen-spec-detail">Python 3.11+ ベースで構築。WebSocketストリーミングによる超低遅延UI更新と禅モダンデザイン。</div>
-        </div>
-
-        <div class="zen-spec-card">
-          <div class="zen-spec-cat">データベース</div>
-          <div class="zen-spec-core">PostgreSQL 16</div>
-          <div class="zen-spec-detail">発言1件ごとの即時コミット、構造化議事録、および親子リレーション（議論リレー）を堅牢に永続化。</div>
-        </div>
-
-        <div class="zen-spec-card">
-          <div class="zen-spec-cat">ネットワーク & セキュリティ</div>
-          <div class="zen-spec-core">Tailscale / 社内閉域網</div>
-          <div class="zen-spec-detail">SSL暗号化リバースプロキシとVPNを介し、社外にポート開放することなく安全にアクセス可能。</div>
-        </div>
+      <div class="spec-card">
+        <div class="spec-cat">Web / UI フレームワーク</div>
+        <div class="spec-core">NiceGUI + FastAPI</div>
+        <div class="spec-detail">Python 3.11+ ベースで構築。WebSocketストリーミングによる超低遅延UI更新と禅モダンデザイン。</div>
       </div>
-    </section>
+
+      <div class="spec-card">
+        <div class="spec-cat">データベース</div>
+        <div class="spec-core">PostgreSQL 16</div>
+        <div class="spec-detail">発言1件ごとの即時コミット、構造化議事録、および親子リレーション（議論リレー）を堅牢に永続化。</div>
+      </div>
+
+      <div class="spec-card">
+        <div class="spec-cat">ネットワーク &amp; セキュリティ</div>
+        <div class="spec-core">Tailscale / 社内閉域網</div>
+        <div class="spec-detail">SSL暗号化リバースプロキシとVPNを介し、社外にポート開放することなく安全にアクセス可能。</div>
+      </div>
+    </div>
 
     <!-- CTA バナー -->
-    <div class="zen-cta-box">
-      <h2 class="zen-cta-title">安全な環境で、最高のアイデア発散を。</h2>
-      <p class="zen-cta-desc">詳しい画面操作方法、助走モードの活用法、エクスポート手順は公式ユーザー操作マニュアルをご覧ください。</p>
+    <div class="cta-box">
+      <h3 class="cta-title">安全な環境で、最高のアイデア発散を。</h3>
+      <p class="cta-desc">詳しい画面操作方法、助走モードの活用法、エクスポート手順は公式ユーザー操作マニュアルをご覧ください。</p>
       <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-        <a href="./manual/html/index.html" class="zen-btn-primary">
+        <a href="./manual/html/index.html" class="btn-cta">
           <span>📖 ユーザー操作マニュアルを開く</span>
           <span>→</span>
         </a>
-        <a href="./manual/markdown/ユーザー操作マニュアル.md" class="zen-btn-secondary">
+        <a href="./manual/markdown/ユーザー操作マニュアル.md" class="btn-secondary">
           <span>📄 Markdown版マニュアルを見る</span>
         </a>
       </div>
     </div>
+  </section>
 
-  </main>
-
-  <!-- フッター -->
-  <footer class="zen-footer">
-    <div class="zen-footer-links">
-      <a href="https://alirexlabs.github.io/" style="font-weight: 600;">← Alirex Labs.</a>
-      <a href="#">トップへ戻る</a>
-      <a href="#features">コア価値</a>
-      <a href="#workflow">ワークフロー</a>
-      <a href="#showcase">画面体験</a>
-      <a href="./manual/html/index.html">Web版マニュアル</a>
-      <a href="./manual/markdown/ユーザー操作マニュアル.md">Markdown版マニュアル</a>
+  <!-- Footer (Shuhari 準拠) -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="./images/logo.png" alt="Logo" class="footer-logo">
+        <div>
+          <div class="footer-title">Local Virtual ThinkTank</div>
+          <div class="footer-tagline">機密情報を扱える完全プライベートなAIマルチエージェント会議室</div>
+        </div>
+      </div>
+      <div class="footer-links">
+        <a href="https://alirexlabs.github.io/" style="font-weight: 600; color: var(--color-accent);">← Alirex Labs.</a>
+        <a href="#features">コア価値</a>
+        <a href="#workflow">ワークフロー</a>
+        <a href="#showcase">画面体験</a>
+        <a href="./manual/html/index.html" class="btn-cta" style="padding: 6px 16px; font-size: 12px;">操作マニュアル</a>
+      </div>
     </div>
-    <p>© 2026 Alirex Labs / Local Virtual ThinkTank Project. All rights reserved.</p>
-    <p style="margin-top: 6px; font-family: var(--font-mono); font-size: 11.5px; color: var(--zen-text-muted);">
-      Design System: 禅 (Zen) UI v1.0 | Version: v0.2.2 | 100% On-Premise Multi-Agent System
-    </p>
+    <div class="footer-bottom">
+      <div>&copy; 2026 Alirex Labs / Local Virtual ThinkTank Project. All rights reserved.</div>
+      <div>Design System: 禅 (Zen) UI v1.0 • Version: v0.2.2 • Kawanishi, Japan</div>
+    </div>
   </footer>
 
-  <script>
-    // タブ切り替え
-    function switchZenTab(index) {
-      const tabs = document.querySelectorAll('.zen-tab-btn');
-      const views = document.querySelectorAll('.zen-view-pane');
-
-      tabs.forEach((tab, i) => {
-        if (i === index) {
-          tab.classList.add('active');
-        } else {
-          tab.classList.remove('active');
-        }
-      });
-
-      views.forEach((view, i) => {
-        if (i === index) {
-          view.classList.add('active');
-        } else {
-          view.classList.remove('active');
-        }
-      });
-    }
-
-    // 禅ライト ⇄ 漆ダーク 切り替え機能
-    function toggleZenTheme() {
-      const htmlEl = document.documentElement;
-      const currentTheme = htmlEl.getAttribute('data-theme') || 'light';
-      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-      htmlEl.setAttribute('data-theme', newTheme);
-      
-      const toggleBtn = document.getElementById('themeToggle');
-      if (toggleBtn) {
-        toggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
-      }
-      localStorage.setItem('lvtt-zen-theme', newTheme);
-    }
-
-    // 初期テーマ復元
-    (function initTheme() {
-      const saved = localStorage.getItem('lvtt-zen-theme');
-      if (saved) {
-        document.documentElement.setAttribute('data-theme', saved);
-        const toggleBtn = document.getElementById('themeToggle');
-        if (toggleBtn) {
-          toggleBtn.textContent = saved === 'dark' ? '☀️' : '🌙';
-        }
-      }
-    })();
-  </script>
+  <script src="js/main.js"></script>
 </body>
+
 </html>
