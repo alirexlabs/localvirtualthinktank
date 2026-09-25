@@ -222,6 +222,18 @@ a:hover {
   color: #FFFFFF !important;
 }
 
+[data-theme="dark"] .btn-cta {
+  background-color: var(--zen-gold);
+  color: #141414 !important;
+  border-color: var(--zen-gold);
+}
+
+[data-theme="dark"] .btn-cta:hover {
+  background-color: #E5C158;
+  border-color: #E5C158;
+  color: #141414 !important;
+}
+
 .btn-secondary {
   border: 1px solid var(--zen-border);
   background: var(--zen-surface-raised);
@@ -242,6 +254,18 @@ a:hover {
   color: var(--zen-gold);
   background: var(--zen-surface-hover);
   transform: translateY(-2px);
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: var(--zen-surface-raised);
+  border-color: var(--zen-border);
+  color: var(--zen-text-primary);
+}
+
+[data-theme="dark"] .btn-secondary:hover {
+  border-color: var(--zen-gold);
+  color: var(--zen-gold);
+  background: var(--zen-surface-hover);
 }
 
 /* テーマ切り替えボタン */
