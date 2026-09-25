@@ -35,12 +35,12 @@ function toggleZenTheme() {
   if (toggleBtn) {
     toggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
   }
-  localStorage.setItem('lvtt-zen-theme', newTheme);
+  localStorage.setItem('alirex-zen-theme', newTheme);
 }
 
 // 初期テーマ復元
 (function initTheme() {
-  const saved = localStorage.getItem('lvtt-zen-theme');
+  const saved = localStorage.getItem('alirex-zen-theme') || localStorage.getItem('lvtt-zen-theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const theme = saved || (prefersDark ? 'dark' : 'light');
 

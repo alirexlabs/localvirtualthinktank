@@ -1,33 +1,33 @@
 /* ==========================================================================
    Zen (禅) UI Design System - Local Virtual ThinkTank (LVTT)
-   準拠仕様: 守破離 (Shuhari) 公式デザインシステム & 禅UI仕様書
+   準拠仕様: 禅UIデザインシステム仕様書 (鳥の子色 / 素色 / 深墨 / 金茶)
    ========================================================================== */
 
 :root {
-  /* 守破離・禅（Zen）公式テーマパレット */
-  --bg-primary: #F4F1EA;       /* 和紙の風合いを帯びた淡い生成り (外側背景) */
-  --bg-surface: #FAF9F6;       /* 禅公式 サーフェス (オフホワイト・鳥の子色) */
-  --bg-card: #F0EDE6;          /* カード・枠内背景 (薄鈍色・生成りグレー) */
-  --bg-card-hover: #EAE6DE;    /* ホバー時のカード背景 */
-  --border-color: #D8D2C6;     /* 繊細な和風の境界線 */
-  --border-accent: #C2BAAC;    /* アクセント境界線 */
+  /* 2.1 コアパレット（禅・ライトモード: 鳥の子色・素色・深墨） */
+  --zen-surface: #FAF9F6;          /* 鳥の子色 (ベース背景) */
+  --zen-surface-raised: #FFFFFF;   /* 素色 (カード・浮き出し要素・ナビバー) */
+  --zen-surface-hover: #F5F4EE;    /* わずかに温かみのあるホバー */
+  --zen-primary: #2D3A3A;          /* 深墨 (重要見出し・主アクセント) */
+  --zen-primary-hover: #1F2828;
+  --zen-secondary: #D2B48C;        /* 枯草色 / 生成り (アクセントタグ・選択) */
+  --zen-secondary-light: #F4EBE1;  /* 生成りライト */
+  --zen-text-primary: #1A1A1A;     /* 漆黒 (本文高コントラスト) */
+  --zen-text-secondary: #555555;   /* 薄墨 (説明文・補足) */
+  --zen-text-muted: #888888;       /* 灰墨 (注釈・ラベル) */
+  --zen-border: #E8E6DF;           /* 灰白 (1px繊細な境界線) */
+  --zen-border-focus: #2D3A3A;
 
-  --color-primary: #2D3A3A;       /* 墨色 (Sumiiro) - 主見出し・ブランドアクセント */
-  --color-primary-dark: #1E2828;
-  --color-accent: #B88E56;        /* 落ち着いた金茶・枯草ベージュ (アクセント) */
-  --color-accent-light: #DFD5C5;  /* 淡い金茶 */
-  --color-urushi: #C33C23;        /* 本朱 (朱色アクセント) */
-  --color-teal: #3B6978;          /* 青磁 (知性・推論・ステータス) */
-  --color-green: #4A6B4F;         /* 若草 / 翡翠 (100% Localバッジ) */
+  /* 和の伝統色アクセント */
+  --zen-gold: #C5A059;             /* 金茶 (ハイライト・アンダーライン・保存CTA) */
+  --zen-vermilion: #B22222;        /* 深緋 (アクセント・注目バッジ) */
+  --zen-teal: #3B6978;             /* 青磁 (サブ・推論・知性) */
+  --zen-green: #4A6B4F;            /* 若草 / 翡翠 (100% Local安心バッジ) */
 
-  --text-main: #1A1A1A;        /* 墨文字 (主テキスト) */
-  --text-muted: #5A6065;       /* 鈍色・薄墨 (副テキスト・キャプション) */
-  --text-sub: #7A8086;
-
-  /* シャドウ・エレベーション */
-  --shadow-sm: 0 2px 10px rgba(45, 58, 58, 0.05);
-  --shadow-md: 0 6px 24px rgba(45, 58, 58, 0.09);
-  --shadow-lg: 0 12px 36px rgba(45, 58, 58, 0.14);
+  /* シャドウ (仕様書 5.2 準拠) */
+  --shadow-sm: 0 1px 3px rgba(45, 58, 58, 0.04), 0 1px 2px rgba(45, 58, 58, 0.02);
+  --shadow-md: 0 4px 16px rgba(45, 58, 58, 0.06), 0 1px 3px rgba(45, 58, 58, 0.03);
+  --shadow-lg: 0 12px 32px rgba(45, 58, 58, 0.08), 0 2px 6px rgba(45, 58, 58, 0.04);
 
   /* タイポグラフィ */
   --font-serif: "Shippori Mincho", "Noto Serif JP", serif;
@@ -43,30 +43,27 @@
   --transition-normal: 250ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* 漆 (Urushi) ダークモード */
+/* 2.2 漆 (Urushi) ダークモード設定 */
 [data-theme="dark"] {
-  --bg-primary: #121314;
-  --bg-surface: #1A1B1C;
-  --bg-card: #222426;
-  --bg-card-hover: #2B2D30;
-  --border-color: #36393D;
-  --border-accent: #4A4E54;
-
-  --color-primary: #E8ECEC;
-  --color-primary-dark: #F5F7F7;
-  --color-accent: #D4AF37;        /* 金箔色 */
-  --color-accent-light: #4A3E20;
-  --color-urushi: #D9482D;
-  --color-teal: #4D8B9E;
-  --color-green: #3D9B6E;
-
-  --text-main: #F0F2F2;
-  --text-muted: #A3AAB0;
-  --text-sub: #768087;
-
-  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.65);
+  --zen-surface: #141414;          /* 深みのある漆黒 */
+  --zen-surface-raised: #1C1A1A;   /* ほのかに赤みを帯びた黒漆 */
+  --zen-surface-hover: #262323;
+  --zen-primary: #E8ECEC;          /* 冴えた墨白 */
+  --zen-primary-hover: #FFFFFF;
+  --zen-secondary: #D4AF37;        /* 金箔色 */
+  --zen-secondary-light: #2A241E;
+  --zen-text-primary: #F0F2F2;     /* 和紙白 */
+  --zen-text-secondary: #A3AAB0;   /* 灰墨 */
+  --zen-text-muted: #768087;
+  --zen-border: #2E2929;           /* 漆境界線 */
+  --zen-border-focus: #D4AF37;
+  --zen-gold: #D4AF37;
+  --zen-vermilion: #C33C23;
+  --zen-teal: #4D8B9E;
+  --zen-green: #3D9B6E;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.6);
 }
 
 * {
@@ -81,43 +78,44 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: var(--bg-primary);
-  color: var(--text-main);
+  background-color: var(--zen-surface);
+  color: var(--zen-text-primary);
   line-height: 1.85;
   overflow-x: hidden;
   background-image:
-    radial-gradient(circle at 12% 10%, rgba(184, 142, 86, 0.08) 0%, transparent 45%),
-    radial-gradient(circle at 88% 70%, rgba(45, 58, 58, 0.05) 0%, transparent 50%);
+    radial-gradient(circle at 12% 10%, rgba(197, 160, 89, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 88% 70%, rgba(45, 58, 58, 0.04) 0%, transparent 50%);
   transition: background-color var(--transition-normal), color var(--transition-normal);
   min-height: 100vh;
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--zen-primary);
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
 a:hover {
-  color: var(--color-accent);
+  color: var(--zen-gold);
 }
 
 /* ==========================================================================
-   Navigation Bar (Shuhari 準拠)
+   Navigation Bar (画面上部固定 スティッキーグラスモーフィズム)
    ========================================================================== */
 .navbar {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(250, 249, 246, 0.92);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-color);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--zen-border);
   padding: 14px 24px;
   transition: background-color var(--transition-normal), border-color var(--transition-normal);
 }
 
 [data-theme="dark"] .navbar {
-  background: rgba(26, 27, 28, 0.92);
+  background: rgba(28, 26, 26, 0.92);
 }
 
 .nav-container {
@@ -139,9 +137,9 @@ a:hover {
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 2px 8px rgba(45, 58, 58, 0.1);
-  background: var(--bg-surface);
+  border: 1px solid var(--zen-border);
+  box-shadow: var(--shadow-sm);
+  background: var(--zen-surface-raised);
   object-fit: cover;
 }
 
@@ -150,14 +148,14 @@ a:hover {
   font-size: 20px;
   font-weight: 700;
   letter-spacing: 1.5px;
-  color: var(--color-primary);
+  color: var(--zen-primary);
 }
 
 .nav-sub {
   font-family: var(--font-display);
   font-size: 11px;
   letter-spacing: 3px;
-  color: var(--color-accent);
+  color: var(--zen-gold);
   margin-left: 4px;
 }
 
@@ -165,9 +163,9 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  color: var(--color-green);
+  background: var(--zen-surface-raised);
+  border: 1px solid var(--zen-border);
+  color: var(--zen-green);
   font-size: 11px;
   font-weight: 600;
   padding: 3px 10px;
@@ -185,16 +183,16 @@ a:hover {
 }
 
 .nav-links a {
-  color: var(--text-main);
+  color: var(--zen-text-primary);
 }
 
 .nav-links a:hover {
-  color: var(--color-accent);
+  color: var(--zen-gold);
 }
 
 .nav-back-link {
   font-weight: 600;
-  color: var(--color-accent) !important;
+  color: var(--zen-gold) !important;
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -202,14 +200,14 @@ a:hover {
 
 /* ボタン */
 .btn-cta {
-  background-color: var(--color-primary);
-  color: var(--bg-surface) !important;
+  background-color: var(--zen-primary);
+  color: #FFFFFF !important;
   padding: 10px 20px;
   border-radius: 30px;
   font-weight: 600;
   font-size: 13.5px;
   letter-spacing: 0.5px;
-  border: 1px solid var(--color-primary);
+  border: 1px solid var(--zen-primary);
   box-shadow: var(--shadow-sm);
   transition: all 0.2s ease;
   display: inline-flex;
@@ -218,16 +216,16 @@ a:hover {
 }
 
 .btn-cta:hover {
-  background-color: var(--color-primary-dark);
+  background-color: var(--zen-primary-hover);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
   color: #FFFFFF !important;
 }
 
 .btn-secondary {
-  border: 1px solid var(--border-color);
-  background: var(--bg-surface);
-  color: var(--color-primary);
+  border: 1px solid var(--zen-border);
+  background: var(--zen-surface-raised);
+  color: var(--zen-primary);
   padding: 10px 20px;
   border-radius: 30px;
   font-size: 13.5px;
@@ -240,23 +238,23 @@ a:hover {
 }
 
 .btn-secondary:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  background: var(--bg-card);
+  border-color: var(--zen-gold);
+  color: var(--zen-gold);
+  background: var(--zen-surface-hover);
   transform: translateY(-2px);
 }
 
 /* テーマ切り替えボタン */
 .theme-toggle-btn {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  background: var(--zen-surface-raised);
+  border: 1px solid var(--zen-border);
   border-radius: var(--radius-full);
   padding: 6px 14px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
-  color: var(--text-main);
+  color: var(--zen-text-primary);
   font-size: 13px;
   font-weight: 500;
   transition: all 0.2s ease;
@@ -264,14 +262,14 @@ a:hover {
 }
 
 .theme-toggle-btn:hover {
-  background-color: var(--bg-card);
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  background-color: var(--zen-surface-hover);
+  border-color: var(--zen-gold);
+  color: var(--zen-gold);
   transform: translateY(-1px);
 }
 
 /* ==========================================================================
-   Hero Section (Shuhari 準拠)
+   Hero Section
    ========================================================================== */
 .hero {
   max-width: 1140px;
@@ -287,19 +285,20 @@ a:hover {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: var(--zen-surface-raised);
+  border: 1px solid var(--zen-border);
   padding: 6px 16px;
   border-radius: 30px;
   font-size: 13px;
-  color: var(--color-primary);
+  color: var(--zen-primary);
   margin-bottom: 22px;
   font-weight: 500;
   letter-spacing: 1px;
+  box-shadow: var(--shadow-sm);
 }
 
 .hero-badge span {
-  color: var(--color-accent);
+  color: var(--zen-gold);
 }
 
 .hero-title {
@@ -309,18 +308,18 @@ a:hover {
   font-weight: 700;
   letter-spacing: 1.5px;
   margin-bottom: 22px;
-  color: var(--color-primary);
+  color: var(--zen-primary);
 }
 
 .hero-title span {
-  color: var(--color-accent);
-  border-bottom: 2px solid var(--color-accent);
+  color: var(--zen-gold);
+  border-bottom: 2px solid var(--zen-gold);
   padding-bottom: 2px;
 }
 
 .hero-desc {
   font-size: 16px;
-  color: var(--text-muted);
+  color: var(--zen-text-secondary);
   margin-bottom: 34px;
   line-height: 1.95;
 }
@@ -344,8 +343,8 @@ a:hover {
 
 /* ヒーロー右側実機プレビュー枠 */
 .hero-preview-frame {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  background: var(--zen-surface-raised);
+  border: 1px solid var(--zen-border);
   border-radius: var(--radius-lg);
   padding: 12px;
   box-shadow: var(--shadow-lg);
@@ -357,13 +356,13 @@ a:hover {
 .hero-preview-frame:hover {
   transform: translateY(-4px);
   box-shadow: 0 16px 44px rgba(45, 58, 58, 0.16);
-  border-color: var(--color-accent);
+  border-color: var(--zen-gold);
 }
 
 .hero-preview-inner {
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--zen-border);
   background-color: #000;
 }
 
@@ -387,7 +386,7 @@ a:hover {
   font-family: var(--font-display);
   font-size: 13px;
   letter-spacing: 4px;
-  color: var(--color-accent);
+  color: var(--zen-gold);
   margin-bottom: 10px;
   text-transform: uppercase;
   font-weight: 600;
@@ -400,7 +399,7 @@ a:hover {
   text-align: center;
   letter-spacing: 1.5px;
   margin-bottom: 16px;
-  color: var(--color-primary);
+  color: var(--zen-primary);
 }
 
 .section-lead {
@@ -408,12 +407,12 @@ a:hover {
   max-width: 760px;
   margin: 0 auto 50px auto;
   font-size: 15.5px;
-  color: var(--text-muted);
+  color: var(--zen-text-secondary);
   line-height: 1.9;
 }
 
 /* ==========================================================================
-   Core Values (3大コア価値) - Shuhari 守破離カード準拠
+   Core Values (3大コア価値)
    ========================================================================== */
 .values-grid {
   display: grid;
@@ -422,8 +421,8 @@ a:hover {
 }
 
 .value-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  background: var(--zen-surface-raised);
+  border: 1px solid var(--zen-border);
   border-radius: var(--radius-md);
   padding: 32px 26px;
   box-shadow: var(--shadow-sm);
@@ -437,7 +436,7 @@ a:hover {
 .value-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
-  border-color: var(--color-accent);
+  border-color: var(--zen-gold);
 }
 
 .value-card::before {
@@ -447,12 +446,12 @@ a:hover {
   left: 0;
   width: 4px;
   height: 100%;
-  background: var(--color-accent);
-  opacity: 0.6;
+  background: var(--zen-gold);
+  opacity: 0.8;
 }
 
-.value-card.teal::before { background: var(--color-teal); }
-.value-card.gold::before { background: var(--color-accent); }
+.value-card.teal::before { background: var(--zen-teal); }
+.value-card.gold::before { background: var(--zen-gold); }
 
 .value-icon {
   width: 48px;
@@ -463,22 +462,22 @@ a:hover {
   justify-content: center;
   font-size: 22px;
   margin-bottom: 18px;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background-color: var(--zen-surface);
+  border: 1px solid var(--zen-border);
 }
 
 .value-title {
   font-family: var(--font-serif);
   font-size: 20px;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--zen-primary);
   margin-bottom: 12px;
   line-height: 1.35;
 }
 
 .value-body {
   font-size: 14px;
-  color: var(--text-muted);
+  color: var(--zen-text-secondary);
   line-height: 1.8;
   flex-grow: 1;
 }
@@ -487,8 +486,8 @@ a:hover {
    Workflow (ワークフロー)
    ========================================================================== */
 .workflow-panel {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  background: var(--zen-surface-raised);
+  border: 1px solid var(--zen-border);
   border-radius: var(--radius-lg);
   padding: 36px 30px;
   box-shadow: var(--shadow-sm);
@@ -512,16 +511,16 @@ a:hover {
 }
 
 .step-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  background: var(--zen-surface);
+  border: 1px solid var(--zen-border);
   border-radius: var(--radius-sm);
   padding: 18px;
   transition: all 0.2s ease;
 }
 
 .step-card:hover {
-  background: var(--bg-surface);
-  border-color: var(--color-accent);
+  background: var(--zen-surface-raised);
+  border-color: var(--zen-gold);
   transform: translateY(-2px);
 }
 
@@ -529,7 +528,7 @@ a:hover {
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: 600;
-  color: var(--color-accent);
+  color: var(--zen-gold);
   letter-spacing: 0.05em;
   margin-bottom: 6px;
 }
@@ -538,13 +537,13 @@ a:hover {
   font-family: var(--font-serif);
   font-size: 15px;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--zen-primary);
   margin-bottom: 6px;
 }
 
 .step-desc {
   font-size: 12.5px;
-  color: var(--text-muted);
+  color: var(--zen-text-secondary);
   line-height: 1.6;
 }
 
@@ -552,8 +551,8 @@ a:hover {
    Showcase (実機インタラクティブ体験)
    ========================================================================== */
 .showcase-panel {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  background: var(--zen-surface-raised);
+  border: 1px solid var(--zen-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-md);
@@ -561,8 +560,8 @@ a:hover {
 
 .tab-nav {
   display: flex;
-  border-bottom: 1px solid var(--border-color);
-  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--zen-border);
+  background-color: var(--zen-surface);
   overflow-x: auto;
 }
 
@@ -570,7 +569,7 @@ a:hover {
   padding: 14px 22px;
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--zen-text-secondary);
   cursor: pointer;
   border: none;
   background: none;
@@ -584,14 +583,14 @@ a:hover {
 }
 
 .tab-btn:hover {
-  color: var(--text-main);
-  background-color: var(--bg-card-hover);
+  color: var(--zen-text-primary);
+  background-color: var(--zen-surface-hover);
 }
 
 .tab-btn.active {
-  color: var(--color-primary);
-  border-bottom-color: var(--color-accent);
-  background-color: var(--bg-surface);
+  color: var(--zen-primary);
+  border-bottom-color: var(--zen-gold);
+  background-color: var(--zen-surface-raised);
 }
 
 .showcase-body {
@@ -615,7 +614,7 @@ a:hover {
 .img-frame {
   border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--zen-border);
   box-shadow: var(--shadow-sm);
   background-color: #000;
 }
@@ -632,7 +631,7 @@ a:hover {
   justify-content: space-between;
   align-items: center;
   font-size: 13.5px;
-  color: var(--text-muted);
+  color: var(--zen-text-secondary);
   flex-wrap: wrap;
   gap: 10px;
 }
@@ -647,9 +646,9 @@ a:hover {
   font-size: 11px;
   padding: 3px 8px;
   border-radius: 4px;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  color: var(--text-sub);
+  background-color: var(--zen-surface);
+  border: 1px solid var(--zen-border);
+  color: var(--zen-text-muted);
 }
 
 /* ==========================================================================
@@ -662,8 +661,8 @@ a:hover {
 }
 
 .spec-card {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  background: var(--zen-surface-raised);
+  border: 1px solid var(--zen-border);
   border-radius: var(--radius-md);
   padding: 24px 20px;
   box-shadow: var(--shadow-sm);
@@ -672,14 +671,14 @@ a:hover {
 
 .spec-card:hover {
   transform: translateY(-3px);
-  border-color: var(--color-accent);
+  border-color: var(--zen-gold);
   box-shadow: var(--shadow-md);
 }
 
 .spec-cat {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--color-accent);
+  color: var(--zen-gold);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 6px;
@@ -689,13 +688,13 @@ a:hover {
   font-family: var(--font-serif);
   font-size: 17px;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--zen-primary);
   margin-bottom: 6px;
 }
 
 .spec-detail {
   font-size: 12.8px;
-  color: var(--text-muted);
+  color: var(--zen-text-secondary);
   line-height: 1.65;
 }
 
@@ -703,8 +702,8 @@ a:hover {
    CTA Box
    ========================================================================== */
 .cta-box {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  background: var(--zen-surface-raised);
+  border: 1px solid var(--zen-border);
   border-radius: var(--radius-lg);
   padding: 50px 30px;
   text-align: center;
@@ -721,20 +720,20 @@ a:hover {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--color-teal), var(--color-accent), var(--color-primary));
+  background: linear-gradient(90deg, var(--zen-teal), var(--zen-gold), var(--zen-primary));
 }
 
 .cta-title {
   font-family: var(--font-serif);
   font-size: 28px;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--zen-primary);
   margin-bottom: 12px;
 }
 
 .cta-desc {
   font-size: 15px;
-  color: var(--text-muted);
+  color: var(--zen-text-secondary);
   max-width: 600px;
   margin: 0 auto 28px;
   line-height: 1.8;
@@ -744,8 +743,8 @@ a:hover {
    Footer
    ========================================================================== */
 footer {
-  background: var(--bg-surface);
-  border-top: 1px solid var(--border-color);
+  background: var(--zen-surface-raised);
+  border-top: 1px solid var(--zen-border);
   padding: 60px 24px 40px 24px;
   margin-top: 60px;
   transition: background-color var(--transition-normal);
@@ -760,7 +759,7 @@ footer {
   flex-wrap: wrap;
   gap: 24px;
   padding-bottom: 30px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--zen-border);
 }
 
 .footer-brand {
@@ -780,12 +779,12 @@ footer {
   font-family: var(--font-serif);
   font-weight: 700;
   font-size: 18px;
-  color: var(--color-primary);
+  color: var(--zen-primary);
 }
 
 .footer-tagline {
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--zen-text-muted);
 }
 
 .footer-links {
@@ -802,7 +801,7 @@ footer {
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--zen-text-muted);
   flex-wrap: wrap;
   gap: 12px;
 }
