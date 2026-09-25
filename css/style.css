@@ -268,27 +268,27 @@ a:hover {
   background: var(--zen-surface-hover);
 }
 
-/* テーマ切り替えボタン */
+/* テーマ切り替えボタン (アイコンのみ) */
 .theme-toggle-btn {
   background: var(--zen-surface-raised);
   border: 1px solid var(--zen-border);
   border-radius: var(--radius-full);
-  padding: 6px 14px;
+  width: 38px;
+  height: 38px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
   cursor: pointer;
   color: var(--zen-text-primary);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 16px;
   transition: all 0.2s ease;
   box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
 }
 
 .theme-toggle-btn:hover {
   background-color: var(--zen-surface-hover);
   border-color: var(--zen-gold);
-  color: var(--zen-gold);
   transform: translateY(-1px);
 }
 
